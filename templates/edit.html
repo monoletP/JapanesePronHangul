@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>편집 - 일본어 가사 한글 변환기</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>발음 편집</h1>
+            <button onclick="goBack()" class="back-button">← 다시 입력</button>
+        </header>
+
+        <div class="edit-controls">
+            <div class="control-group">
+                <label>
+                    <input type="checkbox" id="useHyphen" checked onchange="updateDisplay()">
+                    장음 하이픈 사용
+                </label>
+            </div>
+        </div>
+
+        <main>
+            <div id="editPanel" class="edit-panel">
+                <!-- 여기에 편집 가능한 단어들이 표시됩니다 -->
+            </div>
+        </main>
+
+        <div class="action-buttons">
+            <button onclick="generateOutput()" class="primary-button">
+                결과 보기
+            </button>
+        </div>
+    </div>
+
+    <script src="/static/edit.js"></script>
+</body>
+</html>

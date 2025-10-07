@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결과 - 일본어 가사 한글 변환기</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>변환 결과</h1>
+            <button onclick="goBack()" class="back-button">← 다시 입력</button>
+        </header>
+
+        <div class="output-controls">
+            <div class="control-group">
+                <label>
+                    <input type="checkbox" id="useHyphen" checked onchange="updateOutput()">
+                    장음 하이픈 사용
+                </label>
+                <label>
+                    <input type="checkbox" id="addSpace" onchange="updateOutput()">
+                    공백 추가
+                </label>
+                <label>
+                    <input type="checkbox" id="showOriginal" onchange="updateOutput()">
+                    원문 표시
+                </label>
+                <label>
+                    <input type="checkbox" id="clarifyNn" onchange="updateOutput()">
+                    응(ㄴ) 세분화
+                </label>
+                <label>
+                    <input type="checkbox" id="clarifyXts" onchange="updateOutput()">
+                    촉음(ㅅ) 세분화
+                </label>
+            </div>
+        </div>
+
+        <main>
+            <div id="outputPanel" class="output-panel">
+                <!-- 결과가 여기에 표시됩니다 -->
+            </div>
+        </main>
+
+        <div class="action-buttons">
+            <button onclick="copyToClipboard(event)" class="primary-button">
+                복사하기
+            </button>
+        </div>
+    </div>
+
+    <script src="/static/output.js"></script>
+</body>
+</html>
