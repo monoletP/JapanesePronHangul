@@ -247,11 +247,20 @@ function getLineTextWithOptions(words, useHyphen, addSpace, clarifyNnFlag, clari
     
     for (let i = 0; i < words.length; i++) {
         const word = words[i];
-        const selected = word.alternative_pronunciations[word.selected_id];
+        const alternatives = word.alternative_pronunciations || [];
+        
+        // alternative_pronunciations가 비어있으면 surface 사용
+        if (alternatives.length === 0) {
+            result += word.surface;
+            previousWord = word;
+            continue;
+        }
+        
+        const selected = alternatives[word.selected_id] || alternatives[0];
         const isProperNoun = selected.pos2 === '固有名詞';
         
         // 기본 텍스트 가져오기
-        let wordText = useHyphen ? selected.hangul_pron : selected.hangul_kana;
+        let wordText = useHyphen ? (selected.hangul_pron || word.surface) : (selected.hangul_kana || word.surface);
         
         // 단어 내부 세분화 처리 (고유명사 제외)
         if (!isProperNoun) {
@@ -264,19 +273,23 @@ function getLineTextWithOptions(words, useHyphen, addSpace, clarifyNnFlag, clari
             const pos1 = selected.pos1;
             const pos2 = selected.pos2;
             const pos3 = selected.pos3;
-            const prevSelected = previousWord.alternative_pronunciations[previousWord.selected_id];
-            const prevPos1 = prevSelected.pos1;
-            const prevPos2 = prevSelected.pos2;
             
-            // C# 코드의 공백 조건을 반대로 적용
-            shouldAddSpace = !(
-                pos1 === '助詞' || pos1 === '助動詞' || pos1 === '接尾辞' ||
-                pos2 === '非自立' ||
-                (prevPos1 !== '助詞' && pos2 === '非自立可能') ||
-                (prevPos2 === '接続助詞' && pos1 === '動詞') ||  // 接続助詞 뒤의 動詞는 보조동사
-                prevPos1 === '接頭辞' ||
-                (prevPos2 === '数詞' && (pos2 === '数詞' || pos3 === '助数詞可能'))
-            );
+            const prevAlternatives = previousWord.alternative_pronunciations || [];
+            if (prevAlternatives.length > 0) {
+                const prevSelected = prevAlternatives[previousWord.selected_id] || prevAlternatives[0];
+                const prevPos1 = prevSelected.pos1;
+                const prevPos2 = prevSelected.pos2;
+                
+                // C# 코드의 공백 조건을 반대로 적용
+                shouldAddSpace = !(
+                    pos1 === '助詞' || pos1 === '助動詞' || pos1 === '接尾辞' ||
+                    pos2 === '非自立' ||
+                    (prevPos1 !== '助詞' && pos2 === '非自立可能') ||
+                    (prevPos2 === '接続助詞' && pos1 === '動詞') ||  // 接続助詞 뒤의 動詞는 보조동사
+                    prevPos1 === '接頭辞' ||
+                    (prevPos2 === '数詞' && (pos2 === '数詞' || pos3 === '助数詞可能'))
+                );
+            }
         }
         
         // 공백 추가 전에 이전 단어의 마지막 글자 세분화

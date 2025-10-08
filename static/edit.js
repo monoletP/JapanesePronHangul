@@ -51,8 +51,23 @@ function createWordGroup(word, lineIndex, wordIndex) {
     group.dataset.lineIndex = lineIndex;
     group.dataset.wordIndex = wordIndex;
     
-    const alternatives = word.alternative_pronunciations;
-    const selected = alternatives[word.selected_id];
+    const alternatives = word.alternative_pronunciations || [];
+    
+    // alternative_pronunciations가 비어있으면 기본값 생성
+    if (alternatives.length === 0) {
+        alternatives.push({
+            hangul_pron: word.surface,
+            hangul_kana: word.surface,
+            hiragana_pron: word.surface,
+            katakana_pron: word.surface,
+            pos1: '',
+            pos2: '',
+            pos3: ''
+        });
+        word.selected_id = 0;
+    }
+    
+    const selected = alternatives[word.selected_id] || alternatives[0];
     
     // 원문
     const originalDiv = document.createElement('div');
@@ -63,9 +78,9 @@ function createWordGroup(word, lineIndex, wordIndex) {
     // 한글 발음
     const hangulDiv = document.createElement('div');
     hangulDiv.className = 'word-pronunciation';
-    hangulDiv.dataset.pron = selected.hangul_pron;
-    hangulDiv.dataset.kana = selected.hangul_kana;
-    hangulDiv.textContent = selected.hangul_pron; // 기본값은 하이픈 사용
+    hangulDiv.dataset.pron = selected.hangul_pron || word.surface;
+    hangulDiv.dataset.kana = selected.hangul_kana || word.surface;
+    hangulDiv.textContent = selected.hangul_pron || word.surface; // 기본값은 하이픈 사용
     group.appendChild(hangulDiv);
     
     // 여러 발음이 있으면 클릭 가능하게
