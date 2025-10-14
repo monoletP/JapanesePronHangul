@@ -1,19 +1,10 @@
 # 일본어 가사 한글 변환기
 
-일본어 가사를 한글로 변환하는 웹 애플리케이션입니다.
+일본어 가사를 한글로 변환하는 웹 애플리케이션입니다. 
 
-## 빠른 시작
+## 링크
 
-```bash
-# 설치
-pip install -r requirements.txt
-
-# 실행
-python3 app.py
-
-# 접속
-http://localhost:8000
-```
+https://github.com/monoletP/RomajiConverter.WinUI
 
 ## 사용 예시
 
@@ -55,6 +46,9 @@ http://localhost:8000
 - 다음이 ㅍ → ㅂ
 - 다음이 ㄹ → ㄹ
 - 그 외 → ㅅ
+
+## 참고
+[RomajiConverter.WinUI](https://github.com/xyh20180101/RomajiConverter.WinUI) (xyh20180101)
 
 ## 라이선스
 
